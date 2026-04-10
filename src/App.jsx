@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, Route, Routes } from "react-router";
+import {
+  Link,
+  NavLink,
+  Route,
+  Routes,
+  UNSAFE_useScrollRestoration,
+} from "react-router";
 import { Todo } from "./components/Todo";
 import { Done } from "./components/Done";
 import { All } from "./components/All";
@@ -11,17 +17,10 @@ function App() {
     const savedData = localStorage.getItem("savedList");
     return savedData ? JSON.parse(savedData) : [];
   });
-  const [useDone, setUseDone] = useState(() => {
-    const savedData = localStorage.getItem("savedDone");
-    return savedData ? JSON.parse(savedData) : [];
-  });
 
   useEffect(() => {
     if (useList) {
       localStorage.setItem("savedList", JSON.stringify(useList));
-    }
-    if (useDone) {
-      localStorage.setItem("savedDone", JSON.stringify(useDone));
     }
   });
 
@@ -32,6 +31,7 @@ function App() {
     const newTask = {
       id: Math.random(),
       value: useInput,
+      isDone: false,
     };
 
     setUseList([...useList, newTask]);
@@ -49,19 +49,17 @@ function App() {
   };
 
   const addDone = (task) => {
-    const isDone = useDone.some((t) => t.id === task.id);
-    if (isDone) {
-      setUseDone(useDone.filter((t) => t.id !== task.id));
-      setUseList([...useList, task]);
-    } else {
-      setUseList(useList.filter((t) => t.id !== task.id));
-      setUseDone([...useDone, task]);
-    }
+    const updatedList = useList.map((prev) => {
+      if (prev.id === task.id) {
+        return { ...prev, isDone: !prev.isDone };
+      }
+      return prev;
+    });
+    setUseList(updatedList);
   };
 
   const deleteTask = (id) => {
     setUseList(useList.filter((t) => t.id !== id));
-    setUseDone(useDone.filter((t) => t.id !== id));
   };
 
   return (
@@ -107,14 +105,23 @@ function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<All />}></Route>
+        <Route
+          path="/"
+          element={
+            <All
+              useList={useList}
+              updateTask={updateTask}
+              addDone={addDone}
+              deleteTask={deleteTask}
+            />
+          }
+        ></Route>
         <Route
           path="/todo"
           element={
             <Todo
               useList={useList}
               updateTask={updateTask}
-              useDone={useDone}
               addDone={addDone}
               deleteTask={deleteTask}
             />
@@ -123,7 +130,7 @@ function App() {
         <Route
           path="/done"
           element={
-            <Done useDone={useDone} addDone={addDone} deleteTask={deleteTask} />
+            <Done useList={useList} addDone={addDone} deleteTask={deleteTask} />
           }
         ></Route>
       </Routes>
