@@ -24,6 +24,8 @@ function App() {
     }
   });
 
+  const [showAlert, setShowAlert] = useState(false);
+
   const addTask = (e) => {
     e.preventDefault();
     if (useInput.trim() === "") return;
@@ -46,7 +48,18 @@ function App() {
       return prev;
     });
     setUseList(updatedList);
+    setShowAlert(true);
   };
+
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
 
   const addDone = (task) => {
     const updatedList = useList.map((prev) => {
@@ -103,7 +116,21 @@ function App() {
           Done
         </NavLink>
       </nav>
-
+      {showAlert && (
+        <div
+          className="alert alert-success alert-dismissible fade show"
+          role="alert"
+        >
+          <strong>Update Success!</strong>
+          <button
+            onClick={() => setShowAlert(false)}
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+      )}
       <Routes>
         <Route
           path="/"

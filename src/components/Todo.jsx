@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 export const Todo = ({ useList, addDone, deleteTask, updateTask }) => {
+  const [useInput, setUseInput] = useState("");
   return (
     <>
       {useList.length > 0 ? (
@@ -17,14 +20,25 @@ export const Todo = ({ useList, addDone, deleteTask, updateTask }) => {
               </div>
               <input
                 type="text"
-                value={task.value}
+                value={useInput[task.id] ?? task.value}
                 className={
                   task.isDone
                     ? "form-control text-decoration-line-through"
                     : "form-control"
                 }
-                onChange={(e) => updateTask(task.id, e.target.value)}
+                onChange={(e) =>
+                  setUseInput({ ...useInput, [task.id]: e.target.value })
+                }
               />
+              <button
+                onClick={() =>
+                  updateTask(task.id, useInput[task.id] ?? task.value)
+                }
+                className="btn btn-warning"
+                disabled={task.isDone}
+              >
+                <i className="bi bi-pencil-square"></i>
+              </button>
               <button
                 onClick={() => deleteTask(task.id)}
                 className="btn btn-danger"
