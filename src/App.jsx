@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, Route, Routes } from "react-router";
+import { Link, NavLink, Route, Routes } from "react-router";
 import { Todo } from "./components/Todo";
 import { Done } from "./components/Done";
+import { All } from "./components/All";
 
 function App() {
   const [useInput, setUseInput] = useState("");
@@ -78,18 +79,37 @@ function App() {
           + Add
         </button>
       </form>
-      <nav className="d-flex gap-4 mb-1">
-        <Link to="/" className="nav-link fw-medium">
+      <nav className="d-flex flex-row gap-4 mb-1 navbar-nav">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `nav-link fw-medium p-1 rounded ${isActive ? "bg-dark text-light" : ""}`
+          }
+        >
+          All Task
+        </NavLink>
+        <NavLink
+          to="/todo"
+          className={({ isActive }) =>
+            `nav-link fw-medium p-1 rounded ${isActive ? "bg-dark text-light" : ""}`
+          }
+        >
           To do
-        </Link>
-        <Link to="/done" className="nav-link fw-medium">
+        </NavLink>
+        <NavLink
+          to="/done"
+          className={({ isActive }) =>
+            `nav-link fw-medium p-1 rounded ${isActive ? "bg-dark text-light" : ""}`
+          }
+        >
           Done
-        </Link>
+        </NavLink>
       </nav>
 
       <Routes>
+        <Route path="/" element={<All />}></Route>
         <Route
-          path="/"
+          path="/todo"
           element={
             <Todo
               useList={useList}
