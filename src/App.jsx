@@ -1,12 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router";
 import { Todo } from "./components/Todo";
 import { Done } from "./components/Done";
 
 function App() {
   const [useInput, setUseInput] = useState("");
-  const [useList, setUseList] = useState([]);
-  const [useDone, setUseDone] = useState([]);
+  
+  const [useList, setUseList] = useState(() => {
+    const savedData = localStorage.getItem("savedList");
+    return savedData ? JSON.parse(savedData) : [];
+  });
+  const [useDone, setUseDone] = useState(() => {
+    const savedData = localStorage.getItem("savedDone");
+    return savedData ? JSON.parse(savedData) : [];
+  });
+
+  useEffect(() => {
+    if (useList) {
+      localStorage.setItem("savedList", JSON.stringify(useList));
+    }
+    if (useDone) {
+      localStorage.setItem("savedDone", JSON.stringify(useDone));
+    }
+  });
 
   const addTask = (e) => {
     e.preventDefault();

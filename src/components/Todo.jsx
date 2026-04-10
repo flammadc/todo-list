@@ -21,7 +21,7 @@ export const Todo = ({ useList, useDone, addDone, deleteTask }) => {
                   ? "form-control text-decoration-line-through"
                   : "form-control"
               }
-              disabled
+              
             />
             <button
               onClick={() => deleteTask(task.id)}
