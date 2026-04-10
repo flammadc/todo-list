@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-export const All = ({ useList, addDone, deleteTask, updateTask }) => {
+export const All = ({ useList, addDone, deleteTask, updateTask, inputRef }) => {
   const [useInput, setUseInput] = useState("");
+  const [editingId, setEditingId] = useState(null);
   return (
     <>
       {useList.length > 0 ? (
@@ -21,22 +22,33 @@ export const All = ({ useList, addDone, deleteTask, updateTask }) => {
               value={useInput[task.id] ?? task.value}
               className={
                 task.isDone
-                  ? "form-control text-decoration-line-through"
-                  : "form-control"
+                  ? "form-control bg-white text-decoration-line-through"
+                  : "form-control bg-white"
               }
               onChange={(e) =>
                 setUseInput({ ...useInput, [task.id]: e.target.value })
               }
-              disabled={task.isDone}
+              disabled={editingId !== task.id}
+              ref={(r) => (inputRef.current[task.id] = r)}
             />
             <button
-              onClick={() =>
-                updateTask(task.id, useInput[task.id] ?? task.value)
-              }
+              onClick={() => {
+                if (editingId === task.id) {
+                  updateTask(task.id, useInput[task.id] ?? task.value);
+                  setEditingId(null);
+                } else {
+                  setEditingId(task.id);
+                  setTimeout(() => {
+                    inputRef.current[task.id]?.focus();
+                  }, 0);
+                }
+              }}
               className="btn btn-warning"
               disabled={task.isDone}
             >
-              <i className="bi bi-pencil-square"></i>
+              <i className="bi bi-pencil-square">
+                {editingId === task.id ? "Save Task" : "Edit Task"}
+              </i>
             </button>
             <button
               onClick={() => deleteTask(task.id)}

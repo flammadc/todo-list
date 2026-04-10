@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Link,
   NavLink,
@@ -25,6 +25,7 @@ function App() {
   });
 
   const [showAlert, setShowAlert] = useState(false);
+  const inputRef = useRef({});
 
   const addTask = (e) => {
     e.preventDefault();
@@ -140,6 +141,7 @@ function App() {
               updateTask={updateTask}
               addDone={addDone}
               deleteTask={deleteTask}
+              inputRef={inputRef}
             />
           }
         ></Route>
@@ -151,6 +153,7 @@ function App() {
               updateTask={updateTask}
               addDone={addDone}
               deleteTask={deleteTask}
+              inputRef={inputRef}
             />
           }
         ></Route>
