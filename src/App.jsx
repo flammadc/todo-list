@@ -5,7 +5,6 @@ import { Done } from "./components/Done";
 
 function App() {
   const [useInput, setUseInput] = useState("");
-  const [useUpdate, setUseUpdate] = useState("");
 
   const [useList, setUseList] = useState(() => {
     const savedData = localStorage.getItem("savedList");
