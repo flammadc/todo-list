@@ -1,4 +1,4 @@
-export const Todo = ({ useList, useDone, addDone, deleteTask }) => {
+export const Todo = ({ useList, useDone, addDone, deleteTask, updateTask }) => {
   return (
     <>
       {useList.length > 0 ? (
@@ -21,7 +21,7 @@ export const Todo = ({ useList, useDone, addDone, deleteTask }) => {
                   ? "form-control text-decoration-line-through"
                   : "form-control"
               }
-              
+              onChange={(e) => updateTask(task.id, e.target.value)}
             />
             <button
               onClick={() => deleteTask(task.id)}

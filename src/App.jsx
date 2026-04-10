@@ -5,7 +5,8 @@ import { Done } from "./components/Done";
 
 function App() {
   const [useInput, setUseInput] = useState("");
-  
+  const [useUpdate, setUseUpdate] = useState("");
+
   const [useList, setUseList] = useState(() => {
     const savedData = localStorage.getItem("savedList");
     return savedData ? JSON.parse(savedData) : [];
@@ -35,6 +36,16 @@ function App() {
 
     setUseList([...useList, newTask]);
     setUseInput("");
+  };
+
+  const updateTask = (id, e) => {
+    const updatedList = useList.map((prev) => {
+      if (prev.id === id) {
+        return { ...prev, value: e };
+      }
+      return prev;
+    });
+    setUseList(updatedList);
   };
 
   const addDone = (task) => {
@@ -83,6 +94,7 @@ function App() {
           element={
             <Todo
               useList={useList}
+              updateTask={updateTask}
               useDone={useDone}
               addDone={addDone}
               deleteTask={deleteTask}
