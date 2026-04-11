@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  Link,
-  NavLink,
-  Route,
-  Routes,
-  UNSAFE_useScrollRestoration,
-} from "react-router";
+import { NavLink, Route, Routes } from "react-router";
 import { Todo } from "./components/Todo";
 import { Done } from "./components/Done";
 import { All } from "./components/All";
@@ -80,6 +74,7 @@ function App() {
 
   const onDragStart = (index) => {
     setDragIndex(index);
+    console.log("===ITERASI BARU===");
     console.log(`Mulai index: ${index}`);
   };
 
@@ -87,13 +82,15 @@ function App() {
     e.preventDefault();
 
     if (dragIndex === null || dragIndex === index) return;
-    console.log(`Tujuan index: ${index}`);
+    console.log("===OVER===");
 
-    const currentDragIndex = dragIndex; 
+    console.log(`over Tujuan index: ${index}`);
+
+    const currentDragIndex = dragIndex;
+    console.log(`over Current index: ${currentDragIndex}`);
 
     setUseList((prevList) => {
       const updatedList = [...prevList];
-      console.log(prevList);
       const [movedList] = updatedList.splice(currentDragIndex, 1);
       updatedList.splice(index, 0, movedList);
 
@@ -104,10 +101,14 @@ function App() {
     });
 
     setDragIndex(index);
+    console.log(`over drag index: ${dragIndex}`);
   };
 
   const onDragEnd = () => {
     setDragIndex(null);
+    console.log("===END===");
+
+    console.log(`end drag index: ${dragIndex}`);
   };
 
   return (
@@ -200,7 +201,14 @@ function App() {
         <Route
           path="/done"
           element={
-            <Done useList={useList} addDone={addDone} deleteTask={deleteTask} />
+            <Done
+              useList={useList}
+              addDone={addDone}
+              deleteTask={deleteTask}
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDragEnd={onDragEnd}
+            />
           }
         ></Route>
       </Routes>

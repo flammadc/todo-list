@@ -20,7 +20,14 @@ export const Todo = ({
           .map((task) => {
             const realIndex = useList.findIndex((t) => t.id === task.id);
             return (
-              <div className="input-group w-50 mb-2" key={task.id}>
+              <div
+                className="input-group w-50 mb-2"
+                key={task.id}
+                draggable
+                onDragStart={() => onDragStart(realIndex)}
+                onDragOver={(e) => onDragOver(e, realIndex)}
+                onDragEnd={onDragEnd}
+              >
                 <div className="input-group-text">
                   <input
                     onChange={() => addDone(task)}
@@ -43,11 +50,7 @@ export const Todo = ({
                   }
                   disabled={editingId !== task.id}
                   ref={(r) => (inputRef.current[task.id] = r)}
-                  draggable
-                  onDragStart={() => onDragStart(realIndex)}
-                  onDragOver={(e) => onDragOver(e, realIndex)}
-                  onDragEnd={onDragEnd}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "grab" }}
                 />
                 <button
                   onClick={() => {

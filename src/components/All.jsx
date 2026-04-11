@@ -17,7 +17,14 @@ export const All = ({
     <>
       {useList.length > 0 ? (
         useList.map((task, index) => (
-          <div className="input-group w-50 mb-2" key={task.id}>
+          <div
+            className="input-group w-50 mb-2"
+            key={task.id}
+            draggable
+            onDragStart={() => onDragStart(index)}
+            onDragOver={(e) => onDragOver(e, index)}
+            onDragEnd={onDragEnd}
+          >
             <div className="input-group-text">
               <input
                 onChange={() => addDone(task)}
@@ -40,11 +47,7 @@ export const All = ({
               }
               disabled={editingId !== task.id}
               ref={(r) => (inputRef.current[task.id] = r)}
-              draggable
-              onDragStart={() => onDragStart(index)}
-              onDragOver={(e) => onDragOver(e, index)}
-              onDragEnd={onDragEnd}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "grab" }}
             />
             <button
               onClick={() => {
