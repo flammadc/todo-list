@@ -1,12 +1,22 @@
 import { useState } from "react";
 
-export const All = ({ useList, addDone, deleteTask, updateTask, inputRef }) => {
+export const All = ({
+  useList,
+  addDone,
+  deleteTask,
+  updateTask,
+  inputRef,
+  onDragStart,
+  onDragOver,
+  onDragEnd,
+}) => {
   const [useInput, setUseInput] = useState("");
   const [editingId, setEditingId] = useState(null);
+
   return (
     <>
       {useList.length > 0 ? (
-        useList.map((task) => (
+        useList.map((task, index) => (
           <div className="input-group w-50 mb-2" key={task.id}>
             <div className="input-group-text">
               <input
@@ -30,6 +40,10 @@ export const All = ({ useList, addDone, deleteTask, updateTask, inputRef }) => {
               }
               disabled={editingId !== task.id}
               ref={(r) => (inputRef.current[task.id] = r)}
+              draggable
+              onDragStart={() => onDragStart(index)}
+              onDragOver={(e) => onDragOver(e, index)}
+              onDragEnd={onDragEnd}
             />
             <button
               onClick={() => {

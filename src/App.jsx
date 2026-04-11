@@ -76,6 +76,46 @@ function App() {
     setUseList(useList.filter((t) => t.id !== id));
   };
 
+  const [dragIndex, setDragIndex] = useState(null);
+  const [lastOverIndex, setLastOverIndex] = useState(null);
+
+  const onDragStart = (index) => {
+    setDragIndex(index);
+    console.log(`Mulai index: ${index}`);
+  };
+
+  const onDragOver = (e, index) => {
+    e.preventDefault();
+
+    if (dragIndex === null || dragIndex === index) return;
+    console.log(`Tujuan index: ${index}`);
+
+    if (lastOverIndex === index) return;
+    console.log(`Last over sebelum tujuan index: ${lastOverIndex}`);
+
+    setLastOverIndex(index);
+    console.log(`Last over setelah tujuan index: ${index}`);
+
+    setUseList((prevList) => {
+      const updatedList = [...prevList];
+      console.log(prevList);
+      const [movedList] = updatedList.splice(dragIndex, 1);
+      updatedList.splice(index, 0, movedList);
+
+      return updatedList.map((task, index) => ({
+        ...task,
+        orderIndex: index,
+      }));
+    });
+
+    setDragIndex(index);
+  };
+
+  const onDragEnd = () => {
+    setDragIndex(null);
+    setLastOverIndex(null);
+  };
+
   return (
     <div className="container py-4 ">
       <h1>Todo list</h1>
@@ -142,6 +182,9 @@ function App() {
               addDone={addDone}
               deleteTask={deleteTask}
               inputRef={inputRef}
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDragEnd={onDragEnd}
             />
           }
         ></Route>
