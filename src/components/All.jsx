@@ -44,6 +44,7 @@ export const All = ({
               onDragStart={() => onDragStart(index)}
               onDragOver={(e) => onDragOver(e, index)}
               onDragEnd={onDragEnd}
+              style={{ cursor: "pointer" }}
             />
             <button
               onClick={() => {

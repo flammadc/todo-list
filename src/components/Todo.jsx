@@ -47,6 +47,7 @@ export const Todo = ({
                   onDragStart={() => onDragStart(realIndex)}
                   onDragOver={(e) => onDragOver(e, realIndex)}
                   onDragEnd={onDragEnd}
+                  style={{ cursor: "pointer" }}
                 />
                 <button
                   onClick={() => {
