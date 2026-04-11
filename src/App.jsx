@@ -77,7 +77,6 @@ function App() {
   };
 
   const [dragIndex, setDragIndex] = useState(null);
-  const [lastOverIndex, setLastOverIndex] = useState(null);
 
   const onDragStart = (index) => {
     setDragIndex(index);
@@ -90,16 +89,12 @@ function App() {
     if (dragIndex === null || dragIndex === index) return;
     console.log(`Tujuan index: ${index}`);
 
-    if (lastOverIndex === index) return;
-    console.log(`Last over sebelum tujuan index: ${lastOverIndex}`);
-
-    setLastOverIndex(index);
-    console.log(`Last over setelah tujuan index: ${index}`);
+    const currentDragIndex = dragIndex; 
 
     setUseList((prevList) => {
       const updatedList = [...prevList];
       console.log(prevList);
-      const [movedList] = updatedList.splice(dragIndex, 1);
+      const [movedList] = updatedList.splice(currentDragIndex, 1);
       updatedList.splice(index, 0, movedList);
 
       return updatedList.map((task, index) => ({
@@ -113,7 +108,6 @@ function App() {
 
   const onDragEnd = () => {
     setDragIndex(null);
-    setLastOverIndex(null);
   };
 
   return (
@@ -197,6 +191,9 @@ function App() {
               addDone={addDone}
               deleteTask={deleteTask}
               inputRef={inputRef}
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDragEnd={onDragEnd}
             />
           }
         ></Route>
