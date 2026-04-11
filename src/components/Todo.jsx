@@ -30,8 +30,8 @@ export const Todo = ({
                 value={useInput[task.id] ?? task.value}
                 className={
                   task.isDone
-                    ? "form-control text-decoration-line-through"
-                    : "form-control"
+                    ? "form-control bg-white text-decoration-line-through"
+                    : "form-control bg-white"
                 }
                 onChange={(e) =>
                   setUseInput({ ...useInput, [task.id]: e.target.value })
